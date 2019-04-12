@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundSplash"
+    tools:context=".View.CustomerLoginActivity">
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp"
+        android:background="@drawable/elmawkaflogo"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="238dp"
+        android:text="Customer Login"
+        android:textAlignment="center"
+        android:layout_alignParentLeft="true"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:textColor="@color/TxtColor"
+        />
+
+    <EditText
+        android:id="@+id/TxtCustEmail"
+        android:layout_width="340dp"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="220dp"
+        android:background="@drawable/text_background"
+        android:hint="Email ..."
+        android:inputType="textEmailAddress"
+        android:padding="14dp"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/TxtPwd"
+        android:layout_width="340dp"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginBottom="158dp"
+        android:background="@drawable/text_background"
+        android:hint="Password ..."
+        android:inputType="textPassword"
+        android:padding="14dp"
+        android:textColor="@color/TxtEditColor"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/BtnCustLogin"
+        android:layout_width="260dp"
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="90dp"
+        android:background="@drawable/button_background"
+        android:text="Login"
+        android:textSize="14dp"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/LblCreateNewAccountCustomer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginBottom="46dp"
+        android:text="I don't have an account"
+        android:textAlignment="center"
+        android:textSize="14dp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

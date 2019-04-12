@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundSplash"
+    tools:context=".View.RegisterDriverActivity">
+
+    <ImageView
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp"
+        android:background="@drawable/elmawkaflogo"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="263dp"
+        android:text="Cab Register"
+        android:textAlignment="center"
+        android:textColor="@color/TxtColor"
+        android:textSize="33dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/TxtDriverFullName"
+        android:layout_width="720dp"
+        android:layout_height="90dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="43dp"
+        android:layout_marginLeft="43dp"
+        android:layout_marginBottom="781dp"
+        android:background="@drawable/text_background"
+        android:hint="Full name ..."
+        android:padding="14dp"
+        android:textSize="33dp"
+        android:inputType="textEmailAddress"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/TxtDriverEmpIDReg"
+        android:layout_width="720dp"
+        android:layout_height="90dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="43dp"
+        android:layout_marginLeft="43dp"
+        android:layout_marginBottom="660dp"
+        android:background="@drawable/text_background"
+        android:hint="Employee ID ..."
+        android:padding="14dp"
+        android:textColor="@color/TxtEditColor"
+        android:textSize="33dp"
+        android:inputType="textEmailAddress"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/TxtDriverRegPhone"
+        android:layout_width="720dp"
+        android:layout_height="90dp"
+        android:layout_alignStart="@+id/TxtDriverFullName"
+        android:layout_alignLeft="@+id/TxtDriverFullName"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-1dp"
+        android:layout_marginLeft="-1dp"
+        android:layout_marginBottom="543dp"
+        android:background="@drawable/text_background"
+        android:hint="Phone number ..."
+        android:inputType="phone"
+        android:padding="14dp"
+        android:textSize="33dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/TxtDriverRegPwd"
+        android:layout_width="720dp"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="425dp"
+        android:background="@drawable/text_background"
+        android:hint="Password ..."
+        android:inputType="textPassword"
+        android:padding="14dp"
+        android:textStyle="bold"
+        android:textSize="33dp"
+        />
+
+    <EditText
+        android:id="@+id/TxtDriverRegPwd2"
+        android:layout_width="720dp"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="305dp"
+        android:background="@drawable/text_background"
+        android:hint="Re-Password ..."
+        android:inputType="textPassword"
+        android:padding="14dp"
+        android:textStyle="bold"
+        android:textSize="33dp"
+        />
+
+    <Button
+        android:id="@+id/BtnDriverSignUp"
+        android:layout_width="640dp"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="127dp"
+        android:background="@drawable/button_background"
+        android:text="Sign up now"
+        android:textAllCaps="false"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

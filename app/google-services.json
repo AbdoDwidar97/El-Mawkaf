@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1062128180701",
+    "firebase_url": "https://elmawkaf-94270.firebaseio.com",
+    "project_id": "elmawkaf-94270",
+    "storage_bucket": "elmawkaf-94270.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062128180701:android:c0ed186063f2a547",
+        "android_client_info": {
+          "package_name": "com.example.dwidar.elmawkaf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062128180701-e1it2o229um8bo1g0k3gfb9st1k75n54.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dwidar.elmawkaf",
+            "certificate_hash": "baa871d5c1c1cde5540d4946af5c02cd36dff480"
+          }
+        },
+        {
+          "client_id": "1062128180701-sognspqvkag1hu3j425kn2ol8v68icki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5vS4qWwbQc8MCpnrCBcHpGPb8osD0nRs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1062128180701-sognspqvkag1hu3j425kn2ol8v68icki.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
