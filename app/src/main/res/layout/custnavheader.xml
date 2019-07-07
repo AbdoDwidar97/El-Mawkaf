@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:background="@color/backgroundSplash">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/usericon"
+            android:layout_margin="20dp"
+            />
+
+        <TextView
+            android:id="@+id/TxtViewUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp"
+            android:text="Customer Name"
+            android:textSize="28dp"
+            android:textColor="@color/TxtColor"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+</LinearLayout>

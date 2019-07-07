@@ -79,7 +79,11 @@ public class CustomerLoginActivity extends AppCompatActivity implements CustLogi
     @Override
     public void Login_Successfully()
     {
-        Toast.makeText(CustomerLoginActivity.this , "Success !" , Toast.LENGTH_LONG).show();
+        Toast.makeText(CustomerLoginActivity.this , "Success!" , Toast.LENGTH_SHORT).show();
+        //Intent cutomerMaps = new Intent(CustomerLoginActivity.this, CustomerMaps.class);
+        Intent cutomerMain = new Intent(CustomerLoginActivity.this, CustMainActivity.class);
+        startActivity(cutomerMain);
+        finish();
     }
 
     @Override

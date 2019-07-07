@@ -36,4 +36,11 @@ public class CabLoginModel implements CabLoginContract.IModel
                     }
                 });
     }
+
+    @Override
+    public String get_CapID()
+    {
+        return mAuth.getInstance().getCurrentUser().getUid();
+    }
+
 }

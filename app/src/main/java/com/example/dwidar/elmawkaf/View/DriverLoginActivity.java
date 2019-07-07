@@ -30,6 +30,8 @@ public class DriverLoginActivity extends AppCompatActivity implements CabLoginCo
     private EditText TxtEmpID;
     private EditText TxtPassword;
 
+    private String CabID;
+
 
     //private FirebaseAuth mAuth;
 
@@ -96,6 +98,7 @@ public class DriverLoginActivity extends AppCompatActivity implements CabLoginCo
     {
         Toast.makeText(DriverLoginActivity.this,"Success !",Toast.LENGTH_SHORT).show();
         Intent DriverMap = new Intent(DriverLoginActivity.this , DriverMapsActivity.class);
+        DriverMap.putExtra("CabID",this.CabID);
         startActivity(DriverMap);
         finish();
     }
@@ -112,6 +115,12 @@ public class DriverLoginActivity extends AppCompatActivity implements CabLoginCo
     public void FinishSignIn()
     {
         loadingBar.dismiss();
+    }
+
+    @Override
+    public void Set_CapID(String id)
+    {
+        this.CabID = id;
     }
 
 }

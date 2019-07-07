@@ -2,8 +2,13 @@ package com.example.dwidar.elmawkaf.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
@@ -13,18 +18,15 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.dwidar.elmawkaf.Model.Components.Cab;
 import com.example.dwidar.elmawkaf.Model.Contracts.CabMapsContract;
 import com.example.dwidar.elmawkaf.Presenter.CabMapsPresenter;
 import com.example.dwidar.elmawkaf.R;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,16 +37,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 
-public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCallback, CabMapsContract.IView, ConfirmationDialog.DialogLestiner
+public class CustomerMaps extends FragmentActivity implements OnMapReadyCallback
 {
 
-    CabMapsPresenter cabMapsPresenter;
-    Handler handler;
     LatLng myCurrentLocation;
-
-    Button Cab_Settings_Btn;
-    Button Cab_Logout_Btn;
+    Handler handler;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -64,8 +63,8 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
         {
             if (mLocationPermissionsGranted) {
                 getDeviceLocation();
-                if (ActivityCompat.checkSelfPermission(DriverMapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(DriverMapsActivity.this,
+                if (ActivityCompat.checkSelfPermission(CustomerMaps.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(CustomerMaps.this,
                         Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
@@ -73,7 +72,6 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-                cabMapsPresenter.SetAvailCab(Auth_CabID, myCurrentLocation);
             }
             handler.postDelayed(this, 4000);
         }
@@ -91,37 +89,11 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
-    private String Auth_CabID;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver_maps);
+        setContentView(R.layout.activity_customer_maps);
 
-        Cab_Settings_Btn = (Button) findViewById(R.id.Cab_Settings_Btn);
-        Cab_Logout_Btn = (Button) findViewById(R.id.Cab_Logout_Btn);
-
-
-        Cab_Logout_Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                SignOut();
-            }
-        });
-
-        Cab_Settings_Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-
-            }
-        });
-
-        Intent i = getIntent();
-        Auth_CabID = i.getStringExtra("CabID");
-
-        cabMapsPresenter = new CabMapsPresenter(this);
         handler = new Handler();
         myCurrentLocation = new LatLng(0.0, 0.0);
 
@@ -153,7 +125,7 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
 
                         }else{
                             Log.d(TAG, "onComplete: current location is null");
-                            Toast.makeText(DriverMapsActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomerMaps.this, "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -172,7 +144,7 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
         Log.d(TAG, "initMap: initializing map");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-        mapFragment.getMapAsync(DriverMapsActivity.this);
+        mapFragment.getMapAsync(CustomerMaps.this);
     }
 
     private void getLocationPermission(){
@@ -227,22 +199,8 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     protected void onPause() {
         super.onPause();
-        cabMapsPresenter.RemoveCabLocation(Auth_CabID);
         handler.removeCallbacks(getLastLocation);
         finish();
     }
 
-    private void SignOut()
-    {
-        ConfirmationDialog confirmationDialog = new ConfirmationDialog();
-        confirmationDialog.show(getSupportFragmentManager(), "Confirmation Dialog");
-    }
-
-    @Override
-    public void onYesClicked()
-    {
-        cabMapsPresenter.SignOut();
-        Intent welcomeActivity = new Intent(this, WelcomeActivity.class);
-        startActivity(welcomeActivity);
-    }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/AllTrips" android:title="All Trips" android:icon="@drawable/ic_airport_shuttle_black_24dp"/>
+    <item android:id="@+id/Wallet" android:title="Mawkaf Wallet" android:icon="@drawable/ic_account_balance_wallet_black_24dp"/>
+    <item android:id="@+id/Profile" android:title="Profile" android:icon="@drawable/ic_account_circle_black_24dp"/>
+    <item android:id="@+id/About" android:title="About" android:icon="@drawable/ic_about_black_24dp"/>
+    <item android:id="@+id/CustLogout" android:title="Logout" android:icon="@drawable/ic_logout_settings_new_black_24dp"/>
+
+</menu>

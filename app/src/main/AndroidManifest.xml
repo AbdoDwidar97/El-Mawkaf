@@ -11,13 +11,14 @@
     -->
     <permission
         android:name="com.example.barcodelibrary.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
-    <uses-permission android:name="com.example.barcodelibrary.permission.MAPS_RECEIVE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.barcodelibrary.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -52,7 +53,14 @@
 
         <activity
             android:name=".View.DriverMapsActivity"
-            android:label="@string/title_activity_driver_maps"></activity>
+            android:label="@string/title_activity_driver_maps" />
+        <activity
+            android:name=".View.CustomerMaps"
+            android:label="@string/title_activity_customer_maps" />
+        <activity
+            android:name=".View.CustMainActivity"
+            android:label="@string/title_activity_cust_main"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

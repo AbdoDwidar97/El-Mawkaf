@@ -11,6 +11,7 @@ public class CabLoginContract {
         void Login_Successfully();
         void SigningIn();
         void FinishSignIn();
+        void Set_CapID(String id);
     }
 
     public interface IPresenter
@@ -23,6 +24,7 @@ public class CabLoginContract {
     public interface IModel
     {
         void ULogin(Cab actor, final CabLoginPresenter prese);
+        String get_CapID();
     }
 
 }

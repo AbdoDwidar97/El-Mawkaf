@@ -49,4 +49,11 @@ public class WelcomeActivity extends AppCompatActivity {
         Intent customerLogin = new Intent(this,CustomerLoginActivity.class);
         startActivity(customerLogin);
     }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 }
