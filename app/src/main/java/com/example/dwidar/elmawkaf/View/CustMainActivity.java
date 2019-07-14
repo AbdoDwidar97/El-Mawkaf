@@ -41,6 +41,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class CustMainActivity extends AppCompatActivity
@@ -48,6 +49,7 @@ public class CustMainActivity extends AppCompatActivity
 
 
     CustMainPresenter presenter;
+    Button BtnCallCab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,14 @@ public class CustMainActivity extends AppCompatActivity
         setContentView(R.layout.activity_cust_main);
 
         presenter = new CustMainPresenter(this);
+        BtnCallCab = (Button) findViewById(R.id.BtnCallCab);
+
+        BtnCallCab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BtnCallClick();
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,6 +86,11 @@ public class CustMainActivity extends AppCompatActivity
 
         getLocationPermission();
 
+    }
+
+    private void BtnCallClick()
+    {
+        Toast.makeText(this, "Calling a cab ...", Toast.LENGTH_LONG).show();
     }
 
     @Override
