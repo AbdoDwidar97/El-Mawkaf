@@ -21,17 +21,19 @@
         tools:context=".View.CustomerMaps"
         />
 
-    <SearchView
+    <AutoCompleteTextView
         android:id="@+id/SearchViewPlaces"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="61dp"
-        android:queryHint="What is your destination"
         android:background="@drawable/txt_searchview_background"
-        android:iconifiedByDefault="false"
-        ></SearchView>
+        android:hint="What is your destination"
+        android:completionHint="Powered by Dwidar Places"
+        android:completionThreshold="1"
+        android:paddingLeft="10dp"
+        ></AutoCompleteTextView>
 
     <Button
         android:id="@+id/BtnCallCab"

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.example.dwidar.elmawkaf.Model.Contracts.CustMainContract;
@@ -41,8 +42,15 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Toast;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 public class CustMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, ConfirmationDialog.DialogLestiner, CustMainContract.IView {
@@ -50,6 +58,7 @@ public class CustMainActivity extends AppCompatActivity
 
     CustMainPresenter presenter;
     Button BtnCallCab;
+    AutoCompleteTextView searchViewPlaces;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +67,7 @@ public class CustMainActivity extends AppCompatActivity
 
         presenter = new CustMainPresenter(this);
         BtnCallCab = (Button) findViewById(R.id.BtnCallCab);
+        searchViewPlaces = (AutoCompleteTextView) findViewById(R.id.SearchViewPlaces);
 
         BtnCallCab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +75,8 @@ public class CustMainActivity extends AppCompatActivity
                 BtnCallClick();
             }
         });
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -83,6 +95,9 @@ public class CustMainActivity extends AppCompatActivity
 
         handler = new Handler();
         myCurrentLocation = new LatLng(0.0, 0.0);
+
+        //Log.e("TEST LOCATION OnCreate", "on create now!");
+        presenter.get_location_to_show();
 
         getLocationPermission();
 
@@ -319,4 +334,56 @@ public class CustMainActivity extends AppCompatActivity
         startActivity(welcomeActivity);
         finish();
     }
+
+
+    void getlctions()
+    {
+        ArrayList<com.example.dwidar.elmawkaf.Model.Components.Location> alllocations = new ArrayList<>();
+        try {
+            InputStream inputStream = getAssets().open("locations.txt");
+            int size  = inputStream.available();
+            byte [] buffer = new byte[size];
+            inputStream.read(buffer);
+            inputStream.close();
+            String txt = new String(buffer);
+
+
+            String [] locationsStrings = txt.split("\n");
+            for (String itr : locationsStrings)
+            {
+                String [] lctnStr = itr.split("=");
+                com.example.dwidar.elmawkaf.Model.Components.Location lctn = new com.example.dwidar.elmawkaf.Model.Components.Location();
+                lctn.setLocation_Title(lctnStr[0]);
+                lctn.setLatLng_string(lctnStr[1]);
+                alllocations.add(lctn);
+            }
+
+            presenter.AddLocations(alllocations);
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void ShowLocationToView(ArrayList<com.example.dwidar.elmawkaf.Model.Components.Location> all_locations)
+    {
+        ArrayList<String> locations_str = new ArrayList<>();
+
+        for (com.example.dwidar.elmawkaf.Model.Components.Location itr : all_locations)
+        {
+            locations_str.add(itr.getLocation_Title());
+            Log.e("TEST LOCATIONS VIEW: ", itr.toString());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1,locations_str);
+
+        searchViewPlaces.setAdapter(adapter);
+
+    }
+
 }
+
