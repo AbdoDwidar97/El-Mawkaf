@@ -6,8 +6,11 @@ public class Customer {
     private String PhoneNumber;
     private String email;
     private String UPassword;
+    private String CustID;
+
 
     public Customer()
+
     {
 
     }
@@ -49,6 +52,14 @@ public class Customer {
 
     public void setUPassword(String UPassword) {
         this.UPassword = UPassword;
+    }
+
+    public String getCustID() {
+        return CustID;
+    }
+
+    public void setCustID(String custID) {
+        CustID = custID;
     }
 
 

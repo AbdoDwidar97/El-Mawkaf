@@ -1,12 +1,14 @@
 package com.example.dwidar.elmawkaf.View;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.example.dwidar.elmawkaf.Model.Components.LocationPoint;
 import com.example.dwidar.elmawkaf.Model.Contracts.CustMainContract;
 import com.example.dwidar.elmawkaf.Presenter.CustMainPresenter;
 import com.example.dwidar.elmawkaf.R;
@@ -17,10 +19,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Handler;
 import android.util.Log;
@@ -36,16 +38,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -53,12 +54,15 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class CustMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, ConfirmationDialog.DialogLestiner, CustMainContract.IView {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,
+                   ConfirmationDialog.DialogLestiner, CustMainContract.IView, CallCabBottomSheetDialog.BottomSheetListener {
 
 
     CustMainPresenter presenter;
-    Button BtnCallCab;
     AutoCompleteTextView searchViewPlaces;
+    ArrayAdapter<String> LocationsStr_adapter;
+    ArrayList<LocationPoint> All_locations;
+    ProgressDialog loadingbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,17 +70,34 @@ public class CustMainActivity extends AppCompatActivity
         setContentView(R.layout.activity_cust_main);
 
         presenter = new CustMainPresenter(this);
-        BtnCallCab = (Button) findViewById(R.id.BtnCallCab);
+        loadingbar = new ProgressDialog(this);
+
         searchViewPlaces = (AutoCompleteTextView) findViewById(R.id.SearchViewPlaces);
 
-        BtnCallCab.setOnClickListener(new View.OnClickListener() {
+        searchViewPlaces.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                BtnCallClick();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+
+                presenter.get_Cost(myCurrentLocation, getLocationFromTitle(LocationsStr_adapter.getItem(position)));
+
+                CloseKeyboard();
+
+                MarkerOptions origin = new MarkerOptions().position(myCurrentLocation).title("My Location");
+                MarkerOptions dest = new MarkerOptions()
+                        .position(getLocationFromTitle(LocationsStr_adapter.getItem(position))).title("Destination");
+
+                mMap.clear();
+                mMap.addMarker(origin);
+                mMap.addMarker(dest);
+
+                moveCamera(new LatLng(myCurrentLocation.latitude, myCurrentLocation.longitude),9f);
+
+                presenter.get_Path_Draw(myCurrentLocation, getLocationFromTitle(LocationsStr_adapter.getItem(position)),
+                        getString(R.string.google_api_key));
             }
+
         });
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -101,6 +122,16 @@ public class CustMainActivity extends AppCompatActivity
 
         getLocationPermission();
 
+    }
+
+    private void CloseKeyboard()
+    {
+        View v = this.getCurrentFocus();
+        if (v != null)
+        {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
     }
 
     private void BtnCallClick()
@@ -194,6 +225,7 @@ public class CustMainActivity extends AppCompatActivity
         Log.d(TAG, "onMapReady: map is ready");
         mMap = googleMap;
 
+        getDeviceLocation();
         getLastLocation.run();
 
     }
@@ -205,13 +237,13 @@ public class CustMainActivity extends AppCompatActivity
         public void run()
         {
             if (mLocationPermissionsGranted) {
-                getDeviceLocation();
+                getUpdatedDeviceLocation();
                 if (ActivityCompat.checkSelfPermission(CustMainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(CustMainActivity.this,
                         Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
-                mMap.clear();
+
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
@@ -256,6 +288,39 @@ public class CustMainActivity extends AppCompatActivity
         }
     }
 
+
+
+    private void getUpdatedDeviceLocation(){
+        Log.d(TAG, "getDeviceLocation: getting the devices current location");
+
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        try{
+            if(mLocationPermissionsGranted){
+
+                final Task location = mFusedLocationProviderClient.getLastLocation();
+                location.addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG, "onComplete: found location!");
+                            Location currentLocation = (Location) task.getResult();
+
+                            double longitude = currentLocation.getLongitude();
+                            double latitude = currentLocation.getLatitude();
+                            myCurrentLocation = new LatLng(latitude, longitude);
+
+                        }else{
+                            Log.d(TAG, "onComplete: current location is null");
+                            Toast.makeText(CustMainActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        }catch (SecurityException e){
+            Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage() );
+        }
+    }
 
     private void moveCamera(LatLng latLng, float zoom){
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
@@ -338,7 +403,7 @@ public class CustMainActivity extends AppCompatActivity
 
     void getlctions()
     {
-        ArrayList<com.example.dwidar.elmawkaf.Model.Components.Location> alllocations = new ArrayList<>();
+        ArrayList<LocationPoint> alllocations = new ArrayList<>();
         try {
             InputStream inputStream = getAssets().open("locations.txt");
             int size  = inputStream.available();
@@ -352,7 +417,7 @@ public class CustMainActivity extends AppCompatActivity
             for (String itr : locationsStrings)
             {
                 String [] lctnStr = itr.split("=");
-                com.example.dwidar.elmawkaf.Model.Components.Location lctn = new com.example.dwidar.elmawkaf.Model.Components.Location();
+                LocationPoint lctn = new LocationPoint();
                 lctn.setLocation_Title(lctnStr[0]);
                 lctn.setLatLng_string(lctnStr[1]);
                 alllocations.add(lctn);
@@ -368,22 +433,89 @@ public class CustMainActivity extends AppCompatActivity
 
 
     @Override
-    public void ShowLocationToView(ArrayList<com.example.dwidar.elmawkaf.Model.Components.Location> all_locations)
+    public void ShowLocationToView(ArrayList<LocationPoint> all_locations)
     {
+
+        this.All_locations = all_locations;
         ArrayList<String> locations_str = new ArrayList<>();
 
-        for (com.example.dwidar.elmawkaf.Model.Components.Location itr : all_locations)
+        for (LocationPoint itr : all_locations)
         {
             locations_str.add(itr.getLocation_Title());
-            Log.e("TEST LOCATIONS VIEW: ", itr.toString());
+            //Log.e("TEST LOCATIONS VIEW: ", itr.toString());
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,locations_str);
 
+        this.LocationsStr_adapter = adapter;
         searchViewPlaces.setAdapter(adapter);
 
     }
 
+
+    private LatLng getLocationFromTitle(String title)
+    {
+        double lat = 0.0;
+        double lon = 0.0;
+
+        for (LocationPoint itr : this.All_locations)
+        {
+            if (itr.getLocation_Title().equals(title))
+            {
+                lat = itr.getLatitude();
+                lon = itr.getLongitude();
+            }
+        }
+
+        LatLng lction = new LatLng(lat,lon);
+        return lction;
+    }
+
+    @Override
+    public void ShowTripCost(double trip_cost)
+    {
+        CallCabBottomSheetDialog callCabBottomSheetDialog = new CallCabBottomSheetDialog(trip_cost);
+        callCabBottomSheetDialog.show(getSupportFragmentManager(), "CallCabBottomSheet");
+    }
+
+    @Override
+    public void onMap_DrawPath(PolylineOptions polylineOptions)
+    {
+        mMap.addPolyline(polylineOptions);
+    }
+
+    @Override
+    public void Getting_NerbyCab_Successfull()
+    {
+        loadingbar.dismiss();
+        Toast.makeText(this, "Cab Found", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void CabsNotfound()
+    {
+        loadingbar.dismiss();
+        Toast.makeText(this, "No cabs available right now", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onButtonClicked()
+    {
+        PrepareLoadingBar();
+        GetClosestCab();
+    }
+
+    private void GetClosestCab()
+    {
+        presenter.get_Nearby_Cab(myCurrentLocation);
+    }
+
+    void PrepareLoadingBar()
+    {
+        loadingbar.setTitle("Calling cab");
+        loadingbar.setMessage("Searching for nearby cab ...");
+        loadingbar.show();
+    }
 }
 

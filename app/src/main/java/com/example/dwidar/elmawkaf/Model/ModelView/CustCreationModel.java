@@ -22,19 +22,25 @@ public class CustCreationModel implements CustCreationContract.IModel
         dbRef = FirebaseDatabase.getInstance().getReference("Database").child("Customers");
     }
 
-    public void AddNew(Customer actor , final CustCreationPresenter prese)
+    public void AddNew(final Customer actor , final CustCreationPresenter prese)
     {
         String email = actor.getEmail();
         String pwd = actor.getUPassword();
 
-        dbRef.push().setValue(actor);
+        //dbRef.push().setValue(actor);
 
         mAuth.createUserWithEmailAndPassword(email , pwd)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(Task<AuthResult> task)
                     {
-                        if(task.isSuccessful()) prese.OnSuccessCreation();
+                        if(task.isSuccessful())
+                        {
+                            String custid = mAuth.getCurrentUser().getUid();
+                            actor.setCustID(custid);
+                            dbRef.push().setValue(actor);
+                            prese.OnSuccessCreation();
+                        }
                         else prese.OnFailCreation();
                     }
                 });

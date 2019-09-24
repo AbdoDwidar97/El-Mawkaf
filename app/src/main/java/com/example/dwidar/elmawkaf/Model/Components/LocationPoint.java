@@ -1,17 +1,17 @@
 package com.example.dwidar.elmawkaf.Model.Components;
 
-public class Location
+public class LocationPoint
 {
     private String Location_Title;
     private double latitude = 0.0;
     private double longitude = 0.0;
 
-    public Location()
+    public LocationPoint()
     {
 
     }
 
-    public Location(String title, double latitude, double longitude)
+    public LocationPoint(String title, double latitude, double longitude)
     {
         this.Location_Title = title;
         this.latitude = latitude;

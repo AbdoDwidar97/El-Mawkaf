@@ -24,19 +24,25 @@ public class CabCreationModel implements CabCreationContract.IModel
     }
 
     @Override
-    public void AddNew(Cab actor, final CabCreationPresenter prese)
+    public void AddNew(final Cab actor, final CabCreationPresenter prese)
     {
         String empId = actor.getEmpID();
         String pwd = actor.getUPassword();
 
-        dbRef.push().setValue(actor);
+        //dbRef.push().setValue(actor);
 
         mAuth.createUserWithEmailAndPassword(empId , pwd)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(Task<AuthResult> task)
                     {
-                        if(task.isSuccessful()) prese.OnSuccessCreation();
+                        if(task.isSuccessful())
+                        {
+                            String cabid = mAuth.getCurrentUser().getUid();
+                            actor.setCabID(cabid);
+                            dbRef.push().setValue(actor);
+                            prese.OnSuccessCreation();
+                        }
                         else prese.OnFailCreation();
                     }
                 });

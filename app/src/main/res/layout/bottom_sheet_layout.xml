@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal" >
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:id="@+id/ImgTaxiLogo"
+            android:background="@drawable/taxiimagee" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="130dp"
+            android:paddingTop="8dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/TxtView_Price"
+                android:text="Trip Cost"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/TxtView_Show_Price"
+                android:text="0.00 EGP"
+                android:textSize="16dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="2dp"
+                android:textColor="@color/TxtEditColor" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="18dp" >
+
+        <Button
+            android:id="@+id/BtnCallCab"
+            android:layout_width="330dp"
+            android:layout_height="60dp"
+            android:background="@drawable/button_callcab_background"
+            android:text="Call a Cab"
+            android:textAllCaps="false"
+            android:textColor="@color/TxtColor"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

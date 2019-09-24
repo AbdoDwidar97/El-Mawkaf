@@ -6,6 +6,7 @@ public class Cab {
     private String PhoneNumber;
     private String EmpID;
     private String UPassword;
+    private String CabID;
 
     // AIzaSyB0o2P1IGzbp0_p-aqM4v0nl_jHLJZTU3I
     public Cab()
@@ -53,6 +54,13 @@ public class Cab {
         this.UPassword = UPassword;
     }
 
+    public String getCabID() {
+        return CabID;
+    }
+
+    public void setCabID(String cabID) {
+        CabID = cabID;
+    }
 
 
 }
